@@ -1,15 +1,20 @@
 package fr.epsi.FormeGeometriques;
 
+import java.util.Scanner;
+
 public class FormeConteneur implements GenericFormeInterface {
 
 	public FormeGeometrique[] tableauFormes;
+	public int length;
 
 	public FormeConteneur(){
 		this.tableauFormes = new FormeGeometrique[10];
+		this.length = this.tableauFormes.length;
 	}
 
 	public FormeConteneur(int size){
 		this.tableauFormes = new FormeGeometrique[size];
+		this.length = this.tableauFormes.length;
 	}
 
 	/**
@@ -57,6 +62,15 @@ public class FormeConteneur implements GenericFormeInterface {
 	}
 	*/
 
+	public int verifSize(int index){
+		while (index < 0 || index > this.length){
+			System.out.printf("\nVeuillez saisir un index entre 0 et %d\n", this.length);
+			Scanner scanner = new Scanner(System.in);
+			index = scanner.nextInt();
+		}
+		return index;
+	}
+
 	/**
 		* Generic method to add form to the initialized list of 'FormeGeometrique' in this class
 		* @param forme the geometric form in question
@@ -65,6 +79,7 @@ public class FormeConteneur implements GenericFormeInterface {
 	 */
 	@Override
 	public void addForme(FormeGeometrique forme, int index) {
+		index = verifSize(index);
 		try{
 			this.tableauFormes[index] = forme;
 		} catch (Exception e){
@@ -80,6 +95,7 @@ public class FormeConteneur implements GenericFormeInterface {
 	 * @returns void
 	 */
 	public void addForme(Cercle cercle, int index){
+		index = verifSize(index);
 		try{
 			this.tableauFormes[index] = cercle;
 		} catch (Exception e){
@@ -95,6 +111,7 @@ public class FormeConteneur implements GenericFormeInterface {
 	 * @returns void
 	 */
 	public void addForme(Carre Carre, int index){
+		index = verifSize(index);
 		try{
 			this.tableauFormes[index] = Carre;
 		} catch (Exception e){
@@ -110,6 +127,7 @@ public class FormeConteneur implements GenericFormeInterface {
 	 * @returns void
 	 */
 	public void addForme(Triangle triangle, int index){
+		index = verifSize(index);
 		try{
 			this.tableauFormes[index] = triangle;
 		} catch (Exception e){
@@ -151,7 +169,7 @@ public class FormeConteneur implements GenericFormeInterface {
 		System.out.print(triangle);
 
 		FormeConteneur conteneur = new FormeConteneur();
-		conteneur.addForme(cercle, 0);
+		conteneur.addForme(cercle, -1);
 		conteneur.addForme(Carre, 1);
 		conteneur.addForme(triangle, 3);
 
