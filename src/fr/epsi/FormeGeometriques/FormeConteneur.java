@@ -7,6 +7,11 @@ public class FormeConteneur implements GenericFormeInterface {
 	public FormeConteneur(){
 		this.tableauFormes = new FormeGeometrique[10];
 	}
+
+	public FormeConteneur(int size){
+		this.tableauFormes = new FormeGeometrique[size];
+	}
+
 	/**
 	 * @deprecated
 	 * @see addForme down below
