@@ -1,5 +1,7 @@
 package fr.epsi.FormeGeometriques;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FormeConteneur implements GenericFormeInterface {
@@ -19,7 +21,6 @@ public class FormeConteneur implements GenericFormeInterface {
 
 	/**
 	 * @deprecated
-	 * @see addForme down below
 	 */
 	/*
 	public void addForme() throws IndexOutOfBoundsException {
@@ -72,11 +73,11 @@ public class FormeConteneur implements GenericFormeInterface {
 	}
 
 	/**
-		* Generic method to add form to the initialized list of 'FormeGeometrique' in this class
-		* @param forme the geometric form in question
-		* @param index the index of the list where the element will be added
-		* @returns void
-	 */
+	* Generic method to add form to the initialized list of 'FormeGeometrique' in this class
+	* @param forme the geometric form in question
+	* @param index the index of the list where the element will be added
+	* @returns void
+	*/
 	@Override
 	public void addForme(FormeGeometrique forme, int index) {
 		index = verifSize(index);
@@ -135,6 +136,45 @@ public class FormeConteneur implements GenericFormeInterface {
 		}
 	}
 
+	public void getMaxPerimetre() {
+		try {
+			double max = 0;
+			int index_of_max = 0;
+			for (int i = 0 ; i < this.length ; i++){
+				double temp = this.tableauFormes[i].CalculPerimetre();
+				if (temp > max && this.tableauFormes[i] != null) {
+					max = temp;
+					index_of_max = i;
+				}
+			}
+			String forme_max = this.tableauFormes[index_of_max].getNom();
+			System.out.printf("La forme %s a le plus grand périmètre qui est de : %d\n", forme_max, max);
+		} catch (Exception e){
+			e.getStackTrace();
+		}
+	}
+
+	/**
+	 * @returns
+	 */
+	public void getMinPerimetre() {
+		try {
+			double min = 0;
+			int index_of_min = 0;
+			for (int i = 0 ; i < this.length ; i++){
+				double temp = this.tableauFormes[i].CalculPerimetre();
+				if (temp < min && this.tableauFormes[i] != null) {
+					min = temp;
+					index_of_min = i;
+				}
+			}
+			String forme_min = this.tableauFormes[index_of_min].getNom();
+			System.out.printf("La forme %s a le plus petit périmètre qui est de : %d\n", forme_min, min);
+		} catch (Exception e){
+			e.getStackTrace();
+		}
+	}
+
 	@Override
 	/**
 	 * @Overrides toString default method
@@ -157,8 +197,152 @@ public class FormeConteneur implements GenericFormeInterface {
 
 		return description;
 	}
-	
-	public static void main(String[] args) {
+
+	public void affichageMenu() {
+		/**
+		 * The local variables are used to initialize the menu options
+		 * They are paired with their order number
+		 */
+
+		String separator = "-----";
+		String header = separator + " Menu principal " + separator;
+		String carre = "Créer un carré";
+		String cercle = "Créer un cercle";
+		String triangle = "Créer un Triangle";
+		String liste = "Afficher la liste des formes";
+		String max = "Afficher la forme ayant le plus grand périmètre";
+		String min = "Afficher la forme ayant le plus petit périmètre";
+		String quit = "Quitter";
+		ArrayList<String> menu = new ArrayList<>();
+
+		menu.add(0, header);
+		menu.add(1, carre);
+		menu.add(2, cercle);
+		menu.add(3, triangle);
+		menu.add(4, liste);
+		menu.add(5, max);
+		menu.add(6, min);
+		menu.add(7, quit);
+
+		for (String element : menu) {
+			int index = menu.indexOf(element);
+			if (index == 0){
+				System.out.println(header);
+			}
+			else {
+				System.out.printf(" %d - %s\n", index, element);
+			}
+		}
+		System.out.println("Veuillez saisir un nombre\n");
+	}
+
+	public int getFirstNullIndex(){
+		for(int i = 0; i < this.length; i++){
+			FormeGeometrique forme = this.tableauFormes[i];
+			if (forme == null){
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 *
+	 * @param choix The choice of the user
+	 * @returns true if the user chooses 7
+	 */
+	public int selectionMenu(int choix_initial, int choix) {
+		String line = "----------------------------------";
+		Scanner stringScanner = new Scanner(System.in);
+		Scanner doubleScanner = new Scanner(System.in);
+
+		affichageMenu();
+		choix = (int) doubleScanner.nextDouble();
+
+		switch (choix){
+			default:
+				choix = 0;
+				break;
+
+			case 0:
+				affichageMenu();
+				break;
+
+			case 1:
+				System.out.println("----- Création d'un carré -----");
+				try {
+					System.out.println("Saisissez le nom de votre carré");
+					String nom = stringScanner.next();
+					System.out.println("Saisissez la longueur du côté de votre carré");
+					double cote = doubleScanner.nextDouble();
+
+					Carre carre = new Carre(nom, cote);
+					this.addForme(carre, getFirstNullIndex());
+					System.out.println(line);
+				} catch(Exception e){
+					e.getStackTrace();
+				}
+				break;
+
+			case 2:
+				System.out.println("----- Création d'un cercle -----");
+				try {
+					System.out.println("Saisissez le nom de votre cercle");
+					String nom = stringScanner.next();
+					System.out.println("Saisissez le rayon de votre cercle");
+					double rayon = doubleScanner.nextDouble();
+
+					Cercle cercle = new Cercle(nom, rayon);
+					this.addForme(cercle, getFirstNullIndex());
+					System.out.println(line);
+				} catch (Exception e){
+					e.getStackTrace();
+				}
+				break;
+
+			case 3:
+				System.out.println("----- Création d'un triangle -----");
+				try {
+					System.out.println("Saisissez le nom de votre triangle");
+					String nom = stringScanner.next();
+					System.out.println("Saisissez la longueur du côté de votre triangle");
+					double cote = doubleScanner.nextDouble();
+
+					Triangle triangle = new Triangle(nom, cote);
+					this.addForme(triangle, getFirstNullIndex());
+					System.out.println(line);
+				} catch (Exception e){
+					e.getStackTrace();
+				}
+				break;
+
+			case 4:
+				System.out.println("----- Liste d'éléments -----");
+				System.out.println(this);
+				System.out.println(line);
+				break;
+
+			case 5:
+				System.out.println("----- Plus grand périmètre -----");
+				this.getMaxPerimetre();
+				System.out.println(line);
+				break;
+
+			case 6:
+				System.out.println("----- Plus petit périmètre -----");
+				this.getMinPerimetre();
+				System.out.println(line);
+				break;
+
+			case 7:
+				System.out.println("----- Au revoir -----");
+				System.out.println(line);
+				return -1;
+		}
+		return selectionMenu(choix_initial, choix);
+	}
+
+	public static void main(String[] args) throws IOException {
 		/*Des exemples pour tester la classe et ses méthodes */
 		Cercle cercle = new Cercle("C",2);
 		Carre Carre = new Carre("ABDC",3);
@@ -169,11 +353,18 @@ public class FormeConteneur implements GenericFormeInterface {
 		System.out.print(triangle);
 
 		FormeConteneur conteneur = new FormeConteneur();
-		conteneur.addForme(cercle, -1);
+		conteneur.addForme(cercle, 0);
 		conteneur.addForme(Carre, 1);
 		conteneur.addForme(triangle, 3);
 
 		System.out.println(conteneur);
+		int result = conteneur.selectionMenu(0,0);
+
+		conteneur.getMaxPerimetre();
+		conteneur.getMinPerimetre();
+		while( result != -1 ){
+			conteneur.selectionMenu(0, 0);
+		}
 
 	}
 }

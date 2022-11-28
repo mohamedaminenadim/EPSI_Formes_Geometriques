@@ -2,7 +2,15 @@ package fr.epsi.FormeGeometriques;
 
 public class Carre extends FormeGeometrique {
 	protected double cote;
- 
+
+	public double getCote() {
+		return cote;
+	}
+
+	public void setCote(double cote) {
+		this.cote = cote;
+	}
+
 	@Override
 	public double CalculPerimetre() {
 		double perimetre = cote * 4;
