@@ -26,7 +26,6 @@ public class Cercle extends FormeGeometrique {
 
 	@Override
 	public double CalculPerimetre() {
-		double perimetre = (rayon * 2) * Math.PI;
-		return perimetre;
+		return ((this.rayon * 2) * Math.PI);
 	}
 }

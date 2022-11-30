@@ -10,7 +10,7 @@ public class Triangle extends FormeGeometrique {
  
     @Override
     public double CalculPerimetre() {
-        return cote * 3;
+        return (cote * 3);
     }
 
     public Triangle(double cote) {

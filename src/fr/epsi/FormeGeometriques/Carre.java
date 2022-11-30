@@ -13,8 +13,7 @@ public class Carre extends FormeGeometrique {
 
 	@Override
 	public double CalculPerimetre() {
-		double perimetre = cote * 4;
-		return perimetre;
+		return (cote * 4);
 	}
 
 	public Carre(String nom, double cote) {

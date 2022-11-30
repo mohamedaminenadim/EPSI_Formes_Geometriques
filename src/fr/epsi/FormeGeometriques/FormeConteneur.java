@@ -2,6 +2,7 @@ package fr.epsi.FormeGeometriques;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class FormeConteneur implements GenericFormeInterface {
@@ -136,42 +137,42 @@ public class FormeConteneur implements GenericFormeInterface {
 		}
 	}
 
-	public void getMaxPerimetre() {
+	public FormeGeometrique getMaxPerimetre() {
 		try {
 			double max = 0;
-			int index_of_max = 0;
-			for (int i = 0 ; i < this.length ; i++){
-				double temp = this.tableauFormes[i].CalculPerimetre();
-				if (temp > max && this.tableauFormes[i] != null) {
-					max = temp;
-					index_of_max = i;
+			int index = -1, index_of_min = 0;
+			for (FormeGeometrique forme : this.tableauFormes){
+				index++;
+				if (forme != null && forme.CalculPerimetre() > max){
+					max = forme.CalculPerimetre();
+					index_of_min = index;
 				}
 			}
-			String forme_max = this.tableauFormes[index_of_max].getNom();
-			System.out.printf("La forme %s a le plus grand périmètre qui est de : %d\n", forme_max, max);
+			return this.tableauFormes[index_of_min];
 		} catch (Exception e){
 			e.getStackTrace();
+			return null;
 		}
 	}
 
 	/**
 	 * @returns
 	 */
-	public void getMinPerimetre() {
+	public FormeGeometrique getMinPerimetre() {
 		try {
 			double min = 0;
-			int index_of_min = 0;
-			for (int i = 0 ; i < this.length ; i++){
-				double temp = this.tableauFormes[i].CalculPerimetre();
-				if (temp < min && this.tableauFormes[i] != null) {
-					min = temp;
-					index_of_min = i;
+			int index = -1, index_of_min = 0;
+			for (FormeGeometrique forme : this.tableauFormes){
+				index++;
+				if (forme != null && forme.CalculPerimetre() < min){
+					min = forme.CalculPerimetre();
+					index_of_min = index;
 				}
 			}
-			String forme_min = this.tableauFormes[index_of_min].getNom();
-			System.out.printf("La forme %s a le plus petit périmètre qui est de : %d\n", forme_min, min);
+			return this.tableauFormes[index_of_min];
 		} catch (Exception e){
 			e.getStackTrace();
+			return null;
 		}
 	}
 
@@ -324,13 +325,15 @@ public class FormeConteneur implements GenericFormeInterface {
 
 			case 5:
 				System.out.println("----- Plus grand périmètre -----");
-				this.getMaxPerimetre();
+				FormeGeometrique max = this.getMaxPerimetre();
+				System.out.printf("La forme %s a le plus petit périmètre qui est de : %.2f\n", max, max.CalculPerimetre());
 				System.out.println(line);
 				break;
 
 			case 6:
 				System.out.println("----- Plus petit périmètre -----");
-				this.getMinPerimetre();
+				FormeGeometrique min = this.getMinPerimetre();
+				System.out.printf("La forme %s a le plus petit périmètre qui est de : %.2f\n", min, min.CalculPerimetre());
 				System.out.println(line);
 				break;
 
